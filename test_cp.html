@@ -15,7 +15,7 @@
 <body>
     <div class="portal-container">
         <h2>Login to Wi-Fi</h2>
-        <form id="cpForm" method="GET">
+        <form id="cpForm" method="POST">
             <!-- Required hidden fields for FortiAP RADIUS Authentication -->
             <input type="hidden" name="error_page_url" value="https://yourcompany.com/test/error.html"/>
             <input type="hidden" name="type" value="external"/>
@@ -38,14 +38,17 @@
     </div>
 
     <script>
-        // Get dynamic grant_url from the query string
+        // Get query parameters from URL
         const urlParams = new URLSearchParams(window.location.search);
+        const postUrl = urlParams.get('post'); // Preferred in RADIUS Authentication by
         const grantUrl = urlParams.get('grant_url');
 
-        if (grantUrl) {
+        if (postUrl) {
+            document.getElementById('cpForm').action = postUrl;
+        } else if (grantUrl) {
             document.getElementById('cpForm').action = grantUrl;
         } else {
-            alert("Warning: grant_url parameter is missing. Form submission will not work correctly.");
+            alert("Warning: No valid submission URL found. Form may not work correctly.");
         }
     </script>
 </body>
