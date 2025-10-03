@@ -44,18 +44,17 @@
     <script>
         // Grab URL parameters
         const urlParams = new URLSearchParams(window.location.search);
-        const postUrl = urlParams.get('post');      // FortiAP preferred
+        const postUrl = urlParams.get('post');      // preferred
         const grantUrl = urlParams.get('grant_url'); // fallback
-
-        // Set form action
+        
         if (postUrl) {
             document.getElementById('cpForm').action = postUrl;
         } else if (grantUrl) {
             document.getElementById('cpForm').action = grantUrl;
         } else {
-            // Show warning only if opened manually
-            document.getElementById('warning').style.display = 'block';
+            alert("Warning: No valid submission URL found.");
         }
     </script>
 </body>
 </html>
+
