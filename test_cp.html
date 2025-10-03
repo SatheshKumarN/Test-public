@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Test Captive Portal</title>
+    <meta charset="UTF-8">
+    <title>Captive Portal</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f2f2f2; padding: 50px; }
-        .portal-container { background: #fff; padding: 20px; max-width: 400px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);}
+        body { font-family: Arial, sans-serif; background-color: #f2f2f2; padding: 50px; }
+        .portal-container { background: #fff; padding: 20px; max-width: 400px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
         table { width: 100%; }
         td { padding: 5px; }
         input[type="text"], input[type="password"] { width: 100%; padding: 5px; }
@@ -13,22 +14,31 @@
 </head>
 <body>
     <div class="portal-container">
-        <h2>Test Captive Portal</h2>
+        <h2>Login to Wi-Fi</h2>
         <form id="cpForm" method="GET">
-            <input type="hidden" name="error_page_url" value="http://yourcompany.com/test/error.html"/>
+            <!-- Required hidden fields for FortiAP RADIUS Authentication -->
+            <input type="hidden" name="error_page_url" value="https://yourcompany.com/test/error.html"/>
             <input type="hidden" name="type" value="external"/>
             <table>
-                <tr><td>Username:</td><td><input name="user" type="text" required></td></tr>
-                <tr><td>Password:</td><td><input name="password" type="password" required></td></tr>
-                <tr><td colspan="2" style="text-align:center;">
-                    <input type="submit" value="Login">
-                </td></tr>
+                <tr>
+                    <td>Username:</td>
+                    <td><input type="text" name="user" required></td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><input type="password" name="password" required></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">
+                        <input type="submit" value="Login">
+                    </td>
+                </tr>
             </table>
         </form>
     </div>
 
     <script>
-        // Get grant_url from browser query parameters
+        // Get dynamic grant_url from the query string
         const urlParams = new URLSearchParams(window.location.search);
         const grantUrl = urlParams.get('grant_url');
 
