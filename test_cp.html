@@ -17,10 +17,10 @@
     <div class="portal-container">
         <h2>Login to Wi-Fi</h2>
         <div id="warning" class="warning" style="display:none;">
-            Warning: No valid submission URL detected. Form will not work correctly.
+            Warning: No valid submission URL found. Form may not work correctly if opened manually.
         </div>
         <form id="cpForm" method="POST">
-            <!-- Required hidden fields -->
+            <!-- Required hidden fields for FortiAP -->
             <input type="hidden" name="error_page_url" value="https://yourcompany.com/test/error.html"/>
             <input type="hidden" name="type" value="external"/>
             <table>
@@ -42,19 +42,19 @@
     </div>
 
     <script>
-        // Grab URL parameters
+        // Read URL parameters
         const urlParams = new URLSearchParams(window.location.search);
-        const postUrl = urlParams.get('post');      // preferred
-        const grantUrl = urlParams.get('grant_url'); // fallback
-        
+        const postUrl = urlParams.get('post');      // Preferred for RADIUS Authentication by
+        const grantUrl = urlParams.get('grant_url'); // Fallback
+
         if (postUrl) {
             document.getElementById('cpForm').action = postUrl;
         } else if (grantUrl) {
             document.getElementById('cpForm').action = grantUrl;
         } else {
-            alert("Warning: No valid submission URL found.");
+            // Show warning only if portal opened manually
+            document.getElementById('warning').style.display = 'block';
         }
     </script>
 </body>
 </html>
-
