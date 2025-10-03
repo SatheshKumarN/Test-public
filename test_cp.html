@@ -17,7 +17,7 @@
     <div class="portal-container">
         <h2>Login to Wi-Fi</h2>
         <div id="warning" class="warning" style="display:none;">
-            Warning: No valid submission URL found. Form may not work correctly if opened manually.
+            Warning: No valid submission URL found. This happens if portal opened manually.
         </div>
         <form id="cpForm" method="POST">
             <!-- Required hidden fields for FortiAP -->
@@ -42,17 +42,20 @@
     </div>
 
     <script>
-        // Read URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const postUrl = urlParams.get('post');      // Preferred for RADIUS Authentication by
-        const grantUrl = urlParams.get('grant_url'); // Fallback
+        // Grab dynamic parameters from AP redirect
+        const params = new URLSearchParams(window.location.search);
+        const postUrl = params.get('post');      // AP endpoint for RADIUS Authentication by
+        const grantUrl = params.get('grant_url'); // legacy fallback
+
+        const form = document.getElementById('cpForm');
 
         if (postUrl) {
-            document.getElementById('cpForm').action = postUrl;
+            form.action = postUrl;
+            console.log("Posting credentials to AP post endpoint:", postUrl);
         } else if (grantUrl) {
-            document.getElementById('cpForm').action = grantUrl;
+            form.action = grantUrl;
+            console.log("Posting credentials to grant_url:", grantUrl);
         } else {
-            // Show warning only if portal opened manually
             document.getElementById('warning').style.display = 'block';
         }
     </script>
