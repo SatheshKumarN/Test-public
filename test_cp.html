@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Captive Portal</title>
+    <title>Wi-Fi Login</title>
     <style>
         body { font-family: Arial, sans-serif; background-color: #f2f2f2; padding: 50px; }
         .portal-container { background: #fff; padding: 20px; max-width: 400px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
@@ -10,13 +10,17 @@
         td { padding: 5px; }
         input[type="text"], input[type="password"] { width: 100%; padding: 5px; }
         input[type="submit"] { padding: 10px 20px; margin-top: 10px; cursor: pointer; }
+        .warning { color: red; margin-bottom: 15px; text-align: center; }
     </style>
 </head>
 <body>
     <div class="portal-container">
         <h2>Login to Wi-Fi</h2>
+        <div id="warning" class="warning" style="display:none;">
+            Warning: No valid submission URL detected. Form will not work correctly.
+        </div>
         <form id="cpForm" method="POST">
-            <!-- Required hidden fields for FortiAP RADIUS Authentication -->
+            <!-- Required hidden fields -->
             <input type="hidden" name="error_page_url" value="https://yourcompany.com/test/error.html"/>
             <input type="hidden" name="type" value="external"/>
             <table>
@@ -38,17 +42,19 @@
     </div>
 
     <script>
-        // Get query parameters from URL
+        // Grab URL parameters
         const urlParams = new URLSearchParams(window.location.search);
-        const postUrl = urlParams.get('post'); // Preferred in RADIUS Authentication by
-        const grantUrl = urlParams.get('grant_url');
+        const postUrl = urlParams.get('post');      // FortiAP preferred
+        const grantUrl = urlParams.get('grant_url'); // fallback
 
+        // Set form action
         if (postUrl) {
             document.getElementById('cpForm').action = postUrl;
         } else if (grantUrl) {
             document.getElementById('cpForm').action = grantUrl;
         } else {
-            alert("Warning: No valid submission URL found. Form may not work correctly.");
+            // Show warning only if opened manually
+            document.getElementById('warning').style.display = 'block';
         }
     </script>
 </body>
